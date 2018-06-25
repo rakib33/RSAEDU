@@ -1,0 +1,5 @@
+E:\13.RSA INFO TECH TASK\RSAEDU\clslib\bin\Debug\clslib.dll
+E:\13.RSA INFO TECH TASK\RSAEDU\clslib\bin\Debug\clslib.pdb
+E:\13.RSA INFO TECH TASK\RSAEDU\clslib\obj\Debug\clslib.csprojResolveAssemblyReference.cache
+E:\13.RSA INFO TECH TASK\RSAEDU\clslib\obj\Debug\clslib.dll
+E:\13.RSA INFO TECH TASK\RSAEDU\clslib\obj\Debug\clslib.pdb

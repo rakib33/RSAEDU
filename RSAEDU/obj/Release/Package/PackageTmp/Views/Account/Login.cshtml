@@ -1,0 +1,128 @@
+﻿@model RSAEDU.Models.LoginViewModel
+
+
+
+
+@*<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @required = "required" })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "required" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+                <p>
+                    @Html.ActionLink("Register", "Register") if you don't have a local account.
+                </p>
+            }
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>*@
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">           
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h3 class="mb-0">Login</h3>
+                        </div>
+                        <div class="card-body">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form", role = "form",novalidate="",autocomplete="off" }))
+                                    {
+                            @Html.AntiForgeryToken()                       
+                         
+                            @Html.ValidationSummary(true)
+                            @*<form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">*@
+                                <div class="form-group">
+                                    <label for="uname1">User Name</label>
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-lg rounded-0", @required = "required" })
+                                    @Html.ValidationMessageFor(m => m.UserName)
+                                    @*<input type="text" class="form-control form-control-lg rounded-0" name="uname1" id="uname1" required="">
+                                    <div class="invalid-feedback">Oops, you missed this one.</div>*@
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg rounded-0", @required = "required", @autocomplete = "new-password" })
+                                    @Html.ValidationMessageFor(m => m.Password)
+                                    @*<input type="password" class="form-control form-control-lg rounded-0" id="pwd1" required="" autocomplete="new-password">
+                                    <div class="invalid-feedback">Enter your password too!</div>*@
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        @*<span class="custom-control-description small text-dark">Remember me on this computer</span>*@
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Login</button>
+                        }
+                             @*</form>*@
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+<script>
+    $("#btnLogin").click(function (event) {
+
+        //Fetch form to apply custom Bootstrap validation
+        var form = $("#formLogin")
+
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.addClass('was-validated');
+    });
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

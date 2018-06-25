@@ -1,0 +1,194 @@
+﻿@model RSAEDU.Models.StudentInfo
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>StudentInfo</h4>
+    	<hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ClassId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SectionId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SectionId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FacultyId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.StudentTypeId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.StudentTypeId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AcademicSession)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AcademicSession)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Regno)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Regno)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RollNo)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RollNo)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.StudentName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FatherName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MotherName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MotherName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PresentAdd)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PresentAdd)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PermanentAdd)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PermanentAdd)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DOB)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DOB)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Remarks)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EntryBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EntryBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EntryDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdateBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.UpdateBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.UpdateDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AuthorizedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AuthorizedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AuthorizedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AuthorizedDate)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

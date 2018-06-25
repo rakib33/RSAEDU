@@ -1,0 +1,73 @@
+﻿@model RSAEDU.Models.ExamAttendance
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Exam Attendance Update Form</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ClassId)
+        @Html.HiddenFor(model => model.FacultyId)
+        @Html.HiddenFor(model =>model.StudentId)
+        @Html.HiddenFor(model => model.SubjectId)
+        @Html.HiddenFor(model => model.EntryBy)
+        @Html.HiddenFor(model => model.EntryDate)
+
+
+        @*<input type="date" name="bday" min="1000-01-01"
+               max="3000-12-31" class="form-control">*@
+          <div class="col-md-6">
+
+              <div class="form-group">
+                  <label class="control-label col-md-5 col-sm-5">Student Name</label>
+                  <div class="col-md-10 col-sm-10">
+                      @Html.TextBoxFor(model => model.StudentName, new { @Value = Model.StudentName, @class = "form-control", @readonly = "readonly" })
+
+
+                      @Html.ValidationMessageFor(model => model.StudentName)
+                  </div>
+              </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5">Class Name</label>
+                <div class="col-md-10 col-sm-10">
+                    @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Class_Id, "Select Class", new {@readonly="readonly", @class = "form-control", required = "" })
+                    @Html.ValidationMessageFor(model => model.ClassId)
+                </div>
+            </div>
+
+
+              <div class="form-group">
+                  <label class="control-label col-md-5 col-sm-5">Department Name</label>
+                  <div class="col-md-10 col-sm-10">
+                      @Html.DropDownList("FacultyId", (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "Select Department", new { @readonly = "readonly", @class = "form-control", required = "" })
+                      @Html.ValidationMessageFor(model => model.FacultyId)
+                  </div>
+              </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5">Present</label>               
+                <div class="col-md-10 col-sm-10">                    
+                    @Html.DropDownList("Present", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Present", new { @class = "form-control", required = "" })
+                    @Html.ValidationMessageFor(model => model.Present)
+                </div>
+            </div>                 
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

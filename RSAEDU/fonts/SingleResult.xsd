@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SingleResult" targetNamespace="http://tempuri.org/SingleResult.xsd" xmlns:mstns="http://tempuri.org/SingleResult.xsd" xmlns="http://tempuri.org/SingleResult.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="SingleResult" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="SingleResult" msprop:Generator_UserDSName="SingleResult">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SingleResult" msprop:Generator_TableClassName="SingleResultDataTable" msprop:Generator_TableVarName="tableSingleResult" msprop:Generator_RowChangedName="SingleResultRowChanged" msprop:Generator_TablePropName="_SingleResult" msprop:Generator_RowDeletingName="SingleResultRowDeleting" msprop:Generator_RowChangingName="SingleResultRowChanging" msprop:Generator_RowEvHandlerName="SingleResultRowChangeEventHandler" msprop:Generator_RowDeletedName="SingleResultRowDeleted" msprop:Generator_RowClassName="SingleResultRow" msprop:Generator_UserTableName="SingleResult" msprop:Generator_RowEvArgName="SingleResultRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SubjectName" msprop:Generator_ColumnVarNameInTable="columnSubjectName" msprop:Generator_ColumnPropNameInRow="SubjectName" msprop:Generator_ColumnPropNameInTable="SubjectNameColumn" msprop:Generator_UserColumnName="SubjectName" type="xs:string" minOccurs="0" />
+              <xs:element name="GradePoint" msprop:Generator_ColumnVarNameInTable="columnGradePoint" msprop:Generator_ColumnPropNameInRow="GradePoint" msprop:Generator_ColumnPropNameInTable="GradePointColumn" msprop:Generator_UserColumnName="GradePoint" type="xs:string" minOccurs="0" />
+              <xs:element name="Grade" msprop:Generator_ColumnVarNameInTable="columnGrade" msprop:Generator_ColumnPropNameInRow="Grade" msprop:Generator_ColumnPropNameInTable="GradeColumn" msprop:Generator_UserColumnName="Grade" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

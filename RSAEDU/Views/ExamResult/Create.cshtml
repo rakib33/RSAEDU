@@ -1,0 +1,449 @@
+﻿@model RSAEDU.ViewModel.View_Result
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container py-2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 mx-auto">
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h5 class="mb-0">Exam Result Entry Option</h5>
+                        </div>
+                        <div class="card-body">
+                            <h3>@Html.Raw(ViewBag.message)</h3>                         
+                         
+
+                                <div class="row margin-top-05">
+                     
+                                <label class="col-sm-2 pull-left text-center">Exam Name <span style="color:red">*</span></label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownList("ExamId", (IEnumerable<SelectListItem>)ViewBag.ExamId, "Select Exam", new { @class = "form-control", @required = "required" })
+                                </div>
+
+                                <label class="col-sm-2 pull-left text-center">Department Name <span style="color:red">*</span></label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownList("DeparmentId", (IEnumerable<SelectListItem>)ViewBag.Faculty, "Select Department", new { @class = "form-control", @required = "required" })
+                                   
+                                </div>
+                            </div>
+                           
+
+                            <div class="row margin-top-05">
+                                <label class="col-sm-2 pull-left text-center">Subject Name <span style="color:red">*</span></label>
+                                <div class="col-sm-4">
+                                    <select id="Subject" name="Subject" class="form-control" required></select>
+                                </div>
+                                <label class="col-sm-2 pull-left text-center">Session</label>
+                                <div class="col-sm-4">
+                                    <select id="Session" name="Session" class="form-control" readonly="readonly"></select>                                               
+                                </div>
+                            </div>                             
+                       
+                            <div class="row margin-top-05">
+                                <label class="col-sm-2 pull-left text-center">From Roll</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control pull-left txt-hight-30" name="fromRoll" id="fromRoll" />
+                                </div>
+                                <label class="col-sm-2 pull-left text-center">To Roll</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control pull-left txt-hight-30" name="toRoll" id="toRoll" />
+                                </div>
+                            </div>
+                            <div class="row margin-top-05">
+                                <label class="col-sm-2 pull-left text-center"></label>
+                                <div class="col-sm-4">
+                                    <input type="button" class="btn btn-primary pull-left" id="apply" value="Show" />       
+                                </div>
+                                <label class="col-sm-2 pull-left text-center"></label>
+                                <div class="col-sm-4">
+                                  
+                                </div>
+                            </div>           
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+    
+    
+    <div class="row">
+        <div class="form-group">
+            <div id="dtable" class="col-md-12 col-sm-12">
+
+            </div>
+          </div>
+        </div>
+    <div id="divSub" class="row hidden">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <button id="submit" class="btn btn-success pull-left">Submit</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+
+    var Student;
+    function clear() {
+        $("#dtable").empty();
+        document.getElementById("divSub").className = 'hidden';
+    }
+    $(document).ready(function () {
+
+        document.getElementById("submit").class = 'hidden';
+        
+        $("#ExamId").change(function () {
+            $("#dtable").empty();
+            $("#Subject").empty();
+        });
+
+        $("#DeparmentId").change(function () {
+
+            //alert($("#DeparmentId").val());
+
+            $("#Subject").empty();
+            clear();
+            
+
+            arrHead = []; //empty array
+            //console.log('hited');
+            $.ajax({
+                type: 'POST',
+
+                url:'@Url.Action("LoadSubject", "ExamResult")', //'/Home/LoadSubject',
+                dataType: 'json',
+                data: { depId: $("#DeparmentId").val() },
+
+
+                success: function (data) {
+
+                    console.log(data.msg);
+                    if (data.msg === 'Ok') {
+                        //add initial option
+                        $("#Subject").append('<option value="">Select Subject</option>');
+                        $.each(data.list, function (i, state) {
+                            $("#Subject").append('<option value="' + state.Id + '">' +
+                                 state.SubjectName + '</option>');
+                            //alert('Success');
+
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve subject.' + ex);
+                }
+            });
+            return false;
+        })
+
+
+        $("#apply").click(function () {
+
+           // alert('hited');
+
+            clear();
+          
+            try {
+                var _subId = parseInt($("#Subject").val());
+                var _facId = parseInt( $("#DeparmentId").val());
+                var _examId = parseInt($("#ExamId").val());
+
+                console.log('Sub Id'+_subId+' facId ='+_facId);
+              
+                if (_examId < 1 ||isNaN(_examId)) {
+                    alert('Selecte a Exam Name!');
+                }
+                else if (_facId < 1 || isNaN(_facId)) {
+                    alert('Select a Department!');
+                }
+                else if (_subId < 1 || isNaN(_subId)) {
+                    alert('Select a Subject Name!');
+                }
+
+                else {
+                    //console.log('hited');
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("LoadStudent", "ExamResult")',
+
+                        dataType: 'json',
+
+                        data: { examId: _examId, subId: $("#Subject").val(), FacultyId: $("#DeparmentId").val(), fromRoll: $("#fromRoll").val(), toRoll: $("#toRoll").val() },
+                        
+                        success: function (data) {
+
+                            console.log(data.msg);
+
+                            if (data.msg === 'Ok') {
+                                Student = data.StudentList;
+                                createTable(data.StudentList, data.type);
+
+                                document.getElementById("divSub").className = 'row';
+                            }
+                            else {
+
+                                alert(data.msg);
+                                document.getElementById("divSub").className = 'hidden';
+                            }
+
+                        },
+                        error: function (ex) {
+                            alert('Failed to retrieve country states.' + ex);
+                        }
+                    });
+                }
+            } catch (err)
+            {
+
+                alert(err.message);
+            }
+            return false;
+
+        })
+
+        $("#Subject").change(function () {
+            //clear the table container div
+            clear();           
+            return false;
+        })
+
+    });
+
+    // ARRAY FOR HEADER.
+    var arrHead = new Array();
+
+    // FIRST CREATE A TABLE STRUCTURE BY ADDING A FEW HEADERS AND
+    // ADD THE TABLE TO YOUR WEB PAGE.
+  
+    var QtypeMark = new Array();
+
+    function createTable(student, Qtype) {
+
+        arrHead = [];
+        arrHead = ['Sl', 'Stu. Name', 'Roll',''];      // SIMPLY ADD OR REMOVE VALUES IN THE ARRAY FOR TABLE HEADERS.
+
+        QtypeMark = [];
+
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable');            // SET THE TABLE ID.
+        empTable.setAttribute('class', 'table table-striped table-bordered table-hover dt-responsive nowrap')
+
+        var tr = empTable.insertRow(-1);
+        //We know that Student has two column name and roll we get
+        //and extra Sl No ,CheckBox get 4 field
+
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th');          // TABLE HEADER.
+            //if (arrHead[h] === '') {
+            //    //add a checkbox All
+            //    th.innerHTML = '<input type="checkbox" id="all" onclick="handleClick(this);" class="form-control" />';
+            //}
+           if (arrHead[h] === '') { //for hidden column
+                th.innerHTML = '';
+            }
+            else {
+                th.innerHTML = arrHead[h];
+            }
+            tr.appendChild(th);
+         
+        }
+
+        //Now Add dynamic qType
+     
+        $.each(Qtype, function (i, qtype) {
+            var th = document.createElement('th');          // TABLE HEADER.
+
+            th.innerHTML = qtype.ExamTypeName;
+            console.log(qtype.ExamTypeName);
+            tr.appendChild(th);
+            //push the type in array and its total mark in another are as same sequence
+            arrHead.push(qtype.ExamTypeName);
+
+            var _qtype = {};
+            _qtype.TypeName = qtype.ExamTypeName;
+            _qtype.TotalMark = qtype.TotalMark;
+
+            QtypeMark.push(_qtype);
+          
+         });
+
+        //display how many prototype
+
+        //console.log('student Data Length= ' + StudentDataObj);
+
+
+        var div = document.getElementById('dtable'); //Where want to create table
+        div.appendChild(empTable);    // ADD THE TABLE TO YOUR WEB PAGE.
+
+        console.log('Qtype Mark='+QtypeMark);
+
+        addRow(student, Qtype);
+    }
+
+    // ADD A NEW ROW TO THE TABLE.s
+    function addRow(stu,qtype) {
+       // alert('Hited');
+        console.log('Student List ' + stu);
+
+        $.each(stu, function (i, _stu) {
+
+            var empTab = document.getElementById('empTable');
+            var rowCnt = empTab.rows.length;        // GET TABLE ROW COUNT.
+
+            console.log('row Count :'+rowCnt);
+            var tr = empTab.insertRow(rowCnt);      // TABLE ROW.
+
+            //tr = empTab.insertRow(rowCnt);
+
+            for (var c = 0; c < arrHead.length; c++) {
+                console.log('Name ' + _stu.StudentName + ' Age ' + _stu.RollNo + ' index ' + i);
+
+                var td = document.createElement('td');          // TABLE DEFINITION.
+                td = tr.insertCell(c);
+                if (c === 0)//Sl No
+                {
+
+                    var t = document.createTextNode("" + (i + 1));
+                    td.appendChild(t);
+                }              
+
+                if (c === 1) {
+
+                    var t = document.createTextNode("" + _stu.StudentName);
+                    td.appendChild(t);
+
+                    //var ele = document.createElement('input');
+                    //ele.setAttribute('type', 'text');
+                    //ele.setAttribute('class', 'form-control no-border bk-transparent');
+                    //ele.setAttribute("id", "StuList[" + i + "]StudentName");
+                    //ele.setAttribute("name", "StuList[" + i + "].StudentName");
+                    //ele.setAttribute('value', _stu.StudentName);
+                    ////no-border
+
+                    //td.appendChild(ele);
+
+                }
+                if (c === 2) {
+
+                    var t = document.createTextNode("" + _stu.RollNo);
+                    td.appendChild(t);
+
+                    //var ele = document.createElement('input');
+                    //ele.setAttribute('type', 'text');
+                    //ele.setAttribute('class', 'form-control no-border bk-transparent');
+                    //ele.setAttribute("id", "StuList[" + i + "]RollNo");
+                    //ele.setAttribute("name", "StuList[" + i + "].RollNo");
+                    //ele.setAttribute('value', _stu.RollNo);
+
+                    //create a hidden input also for Student Id
+                    //StudentId
+
+                    //td.appendChild(ele);
+
+                }
+                if (c === 3) { //hidden field
+
+                    //hidden
+                    var ele = document.createElement('input');
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('class', 'hidden');
+                    ele.setAttribute("id", "StuList[" + i + "]StudentId");
+                    ele.setAttribute("name", "StuList[" + i + "].StudentId");
+                    ele.setAttribute('value', _stu.Id);
+
+                  
+
+                    td.appendChild(ele);
+
+                }
+                if(c>3) {
+
+                    //though arrHead and QtypeMark has same sequence we can get 
+                    //add another onkeyUp using  _qtype.TypeName = qtype.ExamTypeName;
+                    // _qtype.TotalMark = qtype.TotalMark;
+                    //QtypeMark
+
+                    var mark = getQTypeByValue(QtypeMark,arrHead[c]);
+                        
+                      
+                    console.log('type name ' + mark.TypeName + 'marke =' + mark.TotalMark);
+
+                    var func = "checkValue(this," + mark.TotalMark + ")";
+                    var ele = document.createElement('input');
+                    ele.setAttribute('id', "StuList[" + i + "]" + arrHead[c])
+                    ele.setAttribute("name", "StuList[" + i + "]."+arrHead[c]);
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('required', 'required');
+                    ele.setAttribute('class', 'form-control decimal bk-transparent');               
+
+                    ele.setAttribute('onkeyup',""+func+"");
+
+                   
+                    
+                    td.appendChild(ele);
+                }
+            }
+
+        });
+
+    }
+
+
+    function getQTypeByValue(arr, value) {
+    
+        for (var i=0, iLen=arr.length; i<iLen; i++) {
+
+            if (arr[i].TypeName == value) return arr[i];
+        }
+    }
+    // DELETE TABLE ROW.
+    function change(e) {
+        var empTab = document.getElementById('empTable');
+    }
+
+    function checkValue(e,tot) {
+
+        //get inputed Value by Id
+       
+
+        var id = e.id;
+        var value = document.getElementById(e.id).value;
+        if (value < 0 || value > tot) {
+          
+            document.getElementById(e.id).value = null;
+            document.getElementById(e.id).className = "form-control decimal bk-transparent border-red";
+
+            alert('You have exceed Total mark '+tot);
+        }
+        else {
+
+            document.getElementById(e.id).className="form-control decimal bk-transparent";
+        }
+         
+    
+    }
+   
+ 
+   
+</script>

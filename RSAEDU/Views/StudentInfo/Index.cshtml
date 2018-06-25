@@ -1,0 +1,147 @@
+﻿@model IEnumerable<RSAEDU.Models.StudentInfo>
+
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SectionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcademicSession)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Regno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RollNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MotherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PresentAdd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PermanentAdd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorizedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorizedDate)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SectionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacultyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicSession)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Regno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RollNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FatherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PresentAdd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PermanentAdd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorizedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorizedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id })                
+            </td>
+        </tr>
+    }
+    
+    </table>
+

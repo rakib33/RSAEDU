@@ -1,0 +1,87 @@
+﻿@model RSAEDU.Models.ExamInfo
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ExamInfo</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @*<input type="date" name="bday" min="800-01-01"
+               max="4000-12-41" class="form-control">*@
+          <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4">Class Name</label>
+                <div class="col-md-8 col-sm-8">
+                    @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Class_Id, "Select Class", new { @class = "form-control", required = "" })
+                    @Html.ValidationMessageFor(model => model.ClassId)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4">Exam Name</label>
+        
+                <div class="col-md-8 col-sm-8">
+                    @Html.TextBoxFor(model => model.ExamName, new { @class = "form-control", required = "" })
+                    @Html.ValidationMessageFor(model => model.ExamName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4">Exam Start Date</label>
+            
+                <div class="col-md-8 col-sm-8">
+                    @Html.TextBox("StartDate", "", new { id = "StartDate", @type = "date", @class = "form-control datepicker", required = "" })
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4">Exam End Date</label>
+          
+                <div class="col-md-8 col-sm-8">
+                    @Html.TextBox("EndDate", "", new { id = "EndDate", @type = "date", @class = "form-control datepicker", required = "" })
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4">Exam Status</label>
+               
+                <div class="col-md-8 col-sm-8">
+                    
+                    @Html.DropDownList("ExamStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control", required = "" })
+                    @Html.ValidationMessageFor(model => model.ExamStatus)
+                </div>
+            </div>
+
+                 
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+ 
+       // $(".datepicker").datepicker({ dateFormat: "dd-M-yy", maxDate: '0' }).val();
+   // $(".datepicker").datepicker();
+    //$("#StartDate").datepicker({
+    //    uiLibrary: 'bootstrap'
+    //});
+    //$("#EndDate").datepicker({
+    //    uiLibrary: 'bootstrap'
+    //});
+    //$('#datepicker').datepicker({
+    //    uiLibrary: 'bootstrap'
+    //});
+</script>

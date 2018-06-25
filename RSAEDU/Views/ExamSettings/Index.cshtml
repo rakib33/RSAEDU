@@ -1,0 +1,125 @@
+﻿@model IEnumerable<RSAEDU.Models.ExamInfoDetail>
+
+@{
+    ViewBag.Title = "Exam Info List";
+    int i = 0;
+}
+
+
+@if (ViewBag.message != null && ViewBag.ok == "ok")
+{
+    <div class="alert alert-close alert-success">
+        <strong>Success !</strong>@Html.Raw(ViewBag.message)     
+    </div>
+}
+else if(ViewBag.message !=null && !string.IsNullOrEmpty(ViewBag.message))
+{
+    <div class="alert alert-danger">
+        <strong>Failed !</strong>@Html.Raw(ViewBag.message)  
+    </div>
+
+}
+
+<div class="container py-2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 mx-auto">
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h5 class="mb-0">Exam Marks Parameter List Form</h5>
+                        </div>
+                        <div class="card-body">                       
+                            @using (Html.BeginForm("", "", FormMethod.Get))  
+                            {
+
+                                <div class="row margin-top-05">
+                                    <label class="col-sm-2 pull-left text-center">Select Exam</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownList("ExamId", (IEnumerable<SelectListItem>)ViewBag.ExamId, "Select Exam", new { @class = "form-control", required = "required" })
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button id="submit" class="btn btn-success pull-left">Show</button>
+                                    </div>
+
+                                    <div class="col-sm-4">                                     
+                                        <a class="btn btn-primary" href="@Url.Action("Create", "ExamSettings")"><span><i class="fa fa-plus"></i></span> Create</a>
+                                    </div>                         
+                               
+                                </div>
+                            }
+
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+
+<div id="dtableExam" class="row margin-top-05">
+    <table class="table table-striped table-bordered table-hover dt-responsive nowrap">
+        <tr>
+            <th>Sl No</th>
+            <th>
+                Exam Name
+            </th>
+            <th>
+                Subject Name
+
+            </th>
+            <th>
+                Exam Type
+            </th>
+
+            <th>
+                Total Marks
+            </th>
+            <th>
+                Pass Mark
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+    {
+        i++;
+    <tr>
+        <td>@i</td>
+        <td>
+            @Html.DisplayFor(modelItem =>item.ExamName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExamType)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalMarks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PassMarks)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+        </td>
+    </tr>
+    }
+
+    </table>
+</div>
+
+
+<script src="~/Scripts/app/exam-settings.js"></script>

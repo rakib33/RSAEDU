@@ -1,0 +1,75 @@
+﻿@model IEnumerable<RSAEDU.Models.FacultyInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (ViewBag.message == "")
+{
+    <div class="alert alert-close alert-success">
+        <a href="#" title="Close" class="glyph-icon alert-close-btn icon-remove"></a>
+
+        <div class="alert-content">
+            <h4 class="alert-title">Wellcome Faculty Info List Form</h4>
+        </div>
+    </div>
+}
+else if(ViewBag.message !=null && ViewBag.ok == "ok")
+{
+   <div class="alert alert-close alert-success">
+        <a href="#" title="Close" class="glyph-icon alert-close-btn icon-remove"></a>
+        <div class="alert-content">
+            <h4 class="alert-title">Success Alert!! </h4>
+            <p>@Html.Raw(ViewBag.message)</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        <a href="#" title="Close" class="glyph-icon alert-close-btn icon-remove"></a>
+
+        <div class="alert-content">
+            <h4 class="alert-title">Message Alert!! </h4>
+            <p>@Html.Raw(ViewBag.message)</p>
+        </div>
+    </div>
+
+}
+<p>
+    <a href="@Url.Action("Create","Faculty")" class="btn btn-success">Create</a> 
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FacultyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FacultyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntryBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntryDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

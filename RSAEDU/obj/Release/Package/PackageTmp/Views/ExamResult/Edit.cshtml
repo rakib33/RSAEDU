@@ -1,0 +1,100 @@
+﻿@model RSAEDU.Models.ExamResult
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Exam Attendance Create Form</h4>
+        <hr />
+        <div class="color-red">
+            @Html.ValidationSummary(true)
+        </div>
+        
+
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.HiddenFor(model => model.ExamId)
+        @Html.HiddenFor(model => model.StudentId)
+        @Html.HiddenFor(model => model.SubjectId)
+        @Html.HiddenFor(model => model.ExamTypeId)
+
+        @Html.HiddenFor(model => model.EntryBy)
+        @Html.HiddenFor(model => model.EntryDate)
+
+ 
+        <div class="row" style="margin-top:5%">
+            <div class="col-md-6">
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.ExamName)
+                    </div>
+                    <div class="col-md-8">
+
+                        @Html.DisplayFor(model => model.ExamName, new { @class = "form-control" })
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.SubjectName)
+                    </div>
+                     <div class="col-md-8">
+                            @Html.DisplayFor(model => model.SubjectName,new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.StudentName)
+                    </div>
+                            <div class="col-md-8">
+                            @Html.DisplayFor(model => model.StudentName,new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.QuestionType)
+                     </div>
+                        <div class="col-md-8">
+                            @Html.DisplayFor(model => model.QuestionType,new { @class = "form-control" })
+
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.MarksObtain)
+                      
+                    </div>
+                          <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.MarksObtain,new { @class = "form-control decimal", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.MarksObtain)
+                        </div>
+                    </div>
+             
+                <div class="form-group row">
+                    <div class="col-md-offset-4 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    
+  }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>

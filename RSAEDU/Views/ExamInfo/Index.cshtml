@@ -1,0 +1,107 @@
+﻿@model IEnumerable<RSAEDU.Models.ExamInfo>
+
+@if (ViewBag.message == "")
+{
+    <div class="alert alert-close alert-success">     
+        <div class="alert-content">
+            <h4 class="alert-title">Wellcome Exam Info List Form</h4>
+        </div>
+    </div>
+}
+else if (ViewBag.message != null && ViewBag.ok == "ok")
+{
+    <div class="alert alert-close alert-success">
+        <div class="alert-content">
+            <h4 class="alert-title">Success Alert!! </h4>
+            <p>@Html.Raw(ViewBag.message)</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">  
+        <div class="alert-content">
+            <h4 class="alert-title">Message Alert!! </h4>
+            <p>@Html.Raw(ViewBag.message)</p>
+        </div>
+    </div>
+
+}
+<p>
+    @Html.ActionLink("Create New", "Create", "ExamInfo", new { @class="btn btn-primary"})
+</p>
+<table class="table table-striped table-bordered table-hover dt-responsive nowrap">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExamName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExamStatus)
+        </th>
+        <th>
+            Publish 
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorizedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorizedDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExamName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExamStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorizedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorizedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })                
+            </td>
+        </tr>
+    }
+
+</table>

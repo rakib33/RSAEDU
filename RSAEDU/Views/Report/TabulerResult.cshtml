@@ -1,0 +1,187 @@
+﻿@model IEnumerable<clslib.mddl.SingleResult>
+@{
+    ViewBag.Title = "TabulerResult";
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    int colspan = 0;
+    colspan = Model.Count() - 2;
+    int row = 0;
+    decimal total = 0;
+    int CountRow = 0;
+ 
+}
+
+
+<table class="tb-logo"> @*table table-hover*@ 
+    <tr>
+        <td colspan="3">
+            <img src="~/Resources/logo.jpg" height="80" width="80" />
+        </td>
+        <td colspan="@colspan" width="800px">
+            <table width="800">
+                <tr>
+                    <td width="800px" height="10px">KUMUDINI GOVT. COLLEGE, TANGAIL</td>
+                </tr>
+                <tr>
+                    <td width="800px" height="10px">@ViewBag.ExamName</td>
+                </tr>
+                <tr>
+                    <td width="800px" height="10px">Group:@ViewBag.FacultyName</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+<table id="tb-result" class="table-bordered table-hover">  @*table-responsive*@ 
+  
+    <tr id="hd">
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        @foreach (var sub in Model.FirstOrDefault().Subject)
+        {            
+            
+          colspan = 0;
+          colspan = sub.ExamTypeList.Count() + 1;
+          <td colspan="@colspan">
+              @sub.ShortName
+          </td>
+        
+        }
+
+    </tr>
+    <tr>
+        <td>
+            Sl No.
+        </td>
+        <td>
+            Roll No.
+        </td>
+        @foreach (var sub in Model.FirstOrDefault().Subject)
+        {
+           
+            foreach (var type in sub.ExamTypeList) { 
+                
+                 if(type.ExamTypeName.ToLower() == "practical") { 
+                  <td>
+                      Prac.
+                  </td>
+                 }
+                 else { 
+                    <td>   
+                       @type.ExamTypeName
+                    </td>
+                 }
+           }
+           <td>
+               Total
+           </td>
+           
+        }
+        <td>Total</td>
+        <td>CGPA</td>
+        <td>Remarks</td>
+    </tr>
+@foreach(var item in Model)
+{
+    row++;
+    <tr>  
+         <td>
+            @row
+        </td>
+        <td>
+           @item.RollNo
+        </td>
+            
+        @foreach (var sub in item.Subject)
+        {
+
+            total = 0;
+            foreach (var type in sub.ExamTypeList) {
+                total += type.MarksObtain;
+
+                if (type.FacultyName == null && type.PassStatus == null && type.StudentName == null)
+                { 
+                  <td>
+                      -
+                  </td>
+                }
+                else { 
+                    <td>
+                       @type.MarksObtain
+                    </td>
+                }
+           }
+           <td>
+               @total
+           </td>
+           
+          }   
+        
+        <td>0</td>
+        <td>A</td>
+        <td>Pass</td>         
+    </tr>
+    
+    
+    if (row == 81 || row == CountRow) //print the header again.header take 2 row.First page contain 81 row and next each page contain 89+2 row.2 row reserved for header.
+    {
+        CountRow = row + 88;
+    <tr id="hd">
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        @foreach (var sub in Model.FirstOrDefault().Subject)
+        {            
+            
+          colspan = 0;
+          colspan = sub.ExamTypeList.Count() + 1;
+          <td colspan="@colspan">
+              @sub.ShortName
+          </td>
+        
+        }
+
+    </tr>
+    <tr>
+        <td>
+            Sl No.
+        </td>
+        <td>
+            Roll No.
+        </td>
+        @foreach (var sub in Model.FirstOrDefault().Subject)
+        {
+           
+            foreach (var type in sub.ExamTypeList) { 
+                
+                 if(type.ExamTypeName.ToLower() == "practical") { 
+                  <td>
+                      Prac.
+                  </td>
+                 }
+                 else { 
+                    <td>   
+                       @type.ExamTypeName
+                    </td>
+                 }
+           }
+           <td>
+               Total
+           </td>
+           
+        }
+        <td>Total</td>
+        <td>CGPA</td>
+        <td>Remarks</td>
+    </tr>
+    }
+}
+</table>
+

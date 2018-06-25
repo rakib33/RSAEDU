@@ -1,0 +1,61 @@
+﻿@model IEnumerable<RSAEDU.Models.ExamInfoDetail>
+
+@{
+    ViewBag.Title = "Exam Info List";
+    int i = 0;
+}
+
+<h5>Exam Marks Parameter List</h5>
+
+<p>
+    @Html.ActionLink("Create New", "Create","ExamSettings",new { @class="btn btn-primary"})
+</p>
+<table class="table table-striped table-bordered table-hover dt-responsive nowrap">
+    <tr>
+        <th>Sl No</th>
+        <th>
+            Subject Name
+
+        </th>
+        <th>
+            Exam Type
+        </th>
+
+        <th>
+            Total/Full Marks
+        </th>
+        <th>
+            Pass Mark
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr>
+            <td>@i</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExamType)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassMarks)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
+
+</table>

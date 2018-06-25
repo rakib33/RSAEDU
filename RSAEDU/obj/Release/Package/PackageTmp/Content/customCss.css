@@ -1,0 +1,57 @@
+﻿.main-header .header-nav > li > ul {
+    /*background: radial-gradient(circle at 1.98% 3%,#348F50,transparent 100%),
+        radial-gradient(circle at 98.02% 98%,#ffffff,transparent 100%),
+        radial-gradient(circle at 50% 50%,#bfd8fc,#d574ff 100%);*/
+    color: #7a3ecc !important;
+    background: #ffffff !important;
+    border-color: #7a3ecc;
+   
+}
+
+
+.main-header .header-nav > li > ul > li a:hover,.main-header .header-nav > li > a:hover {
+    color:#ffffff !important;
+    background-color: #7a3ecc !important;
+    }
+.pan-primary {
+color: #984dff !important;
+/*border:1px solid #7a3ecc !important;*/
+border-radius:4px !important;
+}
+
+
+.contact {
+    height:10px !important;
+}
+
+.header-Panel {
+  text-align:center;
+  width:100%;
+  height:100px;
+  color:white;
+  font-family:Verdana !important;
+  font-weight:bold;
+  font-size:22px;
+  text-transform:uppercase;
+  padding:2% 0 4% 0;
+}
+
+/*Portfolio Image design*/
+
+.equal > div[class*='col-'] {  
+  display: flex;
+  flex-direction: column;
+}
+
+.color-blue {
+color:#55a1e9;
+}
+
+.color-black {
+  color:#000000 !important;
+}
+
+.ico-color {
+color:#984dff;
+}
+

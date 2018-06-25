@@ -1,0 +1,177 @@
+﻿@model RSAEDU.ViewModel.View_ExamDetail
+
+@{
+    int j = 0;
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/input_validation.js"></script>
+
+@using (Html.BeginForm("Save", "ExamSettings"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Exam Subject wise Mark Settings</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            
+            @Html.LabelFor(model => model.Examinfo.ExamName, new { @class = "control-label col-md-3 col-sm-3" })
+            <div class="col-md-5 col-sm-5">
+                @Html.DropDownList("Examinfo.Id", (IEnumerable<SelectListItem>)ViewBag.Examinfo, "Select Exam", new { @class = "form-control", required = "" })
+                @Html.ValidationMessageFor(model => model.Examinfo.Id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3">Subject</label>
+          
+            <div class="col-md-5 col-sm-5">
+                <select id="SubjectId" name="SubjectId" class="form-control" required></select>
+              
+                  @*@Html.DropDownList("SubjectId", (IEnumerable<SelectListItem>)ViewBag.Subject, "Select Subject", new { @class = "form-control", required = "" })*@            
+           
+             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table id="SaleTable" class="table table-striped table-bordered table-hover dt-responsive nowrap" width="" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th>Sl No</th>
+                        <th><input type="checkbox" id="all_chk" class="" /></th>
+                        <th>Exam Type</th>
+                        <th>Total Marks</th>
+                        <th>Pass Mark</th>                     
+                    </tr>
+                    @if (Model != null && Model.TypeDetails.Count > 0)
+                    {
+                        j = 0;
+                        foreach (var i in Model.TypeDetails)
+                        {
+                            <tr style="border:0px">
+                                <td>@(j + 1)</td>
+                                <td>@Html.CheckBoxFor(a => a.TypeDetails[j].chk, new { id = "TypeDetails[" + j + "]chk", @class = "" ,onclick="addrequired('"+j+"')"})</td> @*display-block*@
+                                <td>@Html.TextBoxFor(a => a.TypeDetails[j].TypeName, new { id = "TypeDetails[" + j + "]TypeName", @class = "display-block", @readonly = "readonly" })</td>
+                                <td>@Html.TextBoxFor(a => a.TypeDetails[j].TotalMark, new { id = "TypeDetails[" + j + "]TotalMark", @class = "form-control decimal",onkeyup="checkValue(this)" })</td>
+                                <td>@Html.TextBoxFor(a => a.TypeDetails[j].PassMark, new { id = "TypeDetails[" + j + "]PassMark", @class = "form-control decimal", onkeyup = "checkValue(this)" })</td>
+                                
+                            </tr>
+                            j++;
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<style>
+    .display-block {
+    
+     border: none !important;
+     background:transparent !important;
+    }
+</style>
+
+<script>
+
+    function checkValue(e) {
+        //get inputed Value by Id
+        var id = e.id;
+        var value = document.getElementById(e.id).value;
+        if (value < 0 || value == '' || value == null) {
+
+            document.getElementById(e.id).value = null;
+            document.getElementById(e.id).className = "form-control decimal border-red";
+
+        }
+        else {
+
+            document.getElementById(e.id).className = "form-control decimal";
+        }
+
+
+    }
+
+    function addrequired(e) {
+
+        var idMark = "TypeDetails["+e+"]TotalMark";
+        var idpass = "TypeDetails[" + e + "]PassMark";
+
+        var idChk = "TypeDetails[" + e + "]chk";
+
+        if (document.getElementById(idChk).checked == true) {
+            document.getElementById(idMark).setAttribute("required", "required");
+            document.getElementById(idpass).setAttribute("required", "required");
+
+            document.getElementById(idMark).className = "form-control decimal border-red";
+            document.getElementById(idpass).className = "form-control decimal border-red";
+
+           // alert('hited');
+        } else {
+            document.getElementById(idMark).removeAttribute("required");
+            document.getElementById(idpass).removeAttribute("required");
+
+            document.getElementById(idMark).className = "form-control decimal";
+            document.getElementById(idpass).className = "form-control decimal";
+           // alert('removed');
+        }
+
+      
+    }
+
+
+    $("#Examinfo_Id").change(function () {
+      //  alert('change');
+        $("#SubjectId").empty();
+
+        $.ajax({
+            type: 'POST',
+            url:'@Url.Action("LoadSubject", "ExamSettings")', //'/Home/LoadSubject',
+
+            dataType: 'json',
+
+            data: { examId: $("#Examinfo_Id").val() },
+
+
+            success: function (data) {
+
+                console.log(data.msg);
+                if (data.msg === 'Ok') {
+                    //add initial option
+                    $("#SubjectId").append('<option value="">Select Subject</option>');
+                    $.each(data.list, function (i, state) {
+                        $("#SubjectId").append('<option value="' + state.Id + '">' +
+                             state.SubjectName + '</option>');
+                        //alert('Success');
+
+                    });
+                }
+            },
+            error: function (ex) {
+                alert('Failed to retrieve subject.' + ex);
+            }
+        });
+        return false;
+    })
+   
+</script>

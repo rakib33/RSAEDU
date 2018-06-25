@@ -1,0 +1,65 @@
+﻿@model IEnumerable<RSAEDU.Models.SubjectInfo>
+
+@if (ViewBag.message != null && ViewBag.ok == "ok")
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong> @Html.Raw(ViewBag.message)
+    </div>
+}
+else if (ViewBag.message != null && !string.IsNullOrEmpty(ViewBag.message))
+{
+    <div class="alert alert-danger">
+        <strong>Failed!</strong> @Html.Raw(ViewBag.message)
+    </div>
+}
+
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Create", "SubjectInfo")"><span><i class="fa fa-plus"></i></span>Add Subject</a>
+</p>
+
+<table class="table table-striped table-bordered table-hover dt-responsive nowrap">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ManualCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManualCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                
+            </td>
+        </tr>
+    }
+
+</table>

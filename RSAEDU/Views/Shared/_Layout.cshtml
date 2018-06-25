@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from bootswatch.com/pulse/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Mar 2018 05:37:25 GMT -->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    <title>RSA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/custom-pulse.min.css" rel="stylesheet" />
+
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Layout.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/input_validation.js"></script>
+
+    <script>
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-23019901-1']);
+        _gaq.push(['_setDomainName', "bootswatch.com"]);
+        _gaq.push(['_setAllowLinker', true]);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+
+       $(window).load(function () {
+           setTimeout(function () {
+               $('#loading').fadeOut(400, "linear");
+           }, 300);
+       });
+       
+    </script>
+</head>
+<body>
+    <div class="fixed-top">
+        <div class="navbar row text-center" style="color:white ;background-color:#808080">
+            <div class="col-md-2 col-sm-2">
+
+            </div>
+            <div class="col-md-8">
+                <h3 class="text-center" style="color:white;font-family:Verdana !important;">KUMUDINI GOVT. COLLEGE, TANGAIL</h3>
+            </div>
+            <div class="col-md-2 col-sm-2">
+
+            </div>
+
+        </div>
+        <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+            <div class="container">
+                <a href="/Home/Index" class="navbar-brand">
+
+                    <img src="~/Resources/logo.jpg" height="80" width="80" />
+                </a>
+
+                @if(User.Identity.IsAuthenticated)
+                {
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">General Information<span class="caret"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="download">
+                                    <a class="dropdown-item" href="@Url.Action("Index", "Faculty")">Faculty Info</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "SubjectInfo")">Subject Info</a>
+                                    <a class="dropdown-item" href="#">Student Info</a>
+                                    <a class="dropdown-item" href="#">Daily Attendence Info</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Parameter Settings<span class="caret"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="download">
+                                    <a class="dropdown-item" href="@Url.Action("GradeIndex", "ExamInfo")">Grade Parameter</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "ExamInfo")">Exam Name</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "ExamSettings")">Exam Marks Parameter</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Result Processing<span class="caret"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="download">                               
+                                    <a class="dropdown-item" href="#">Seat Plan</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "ExamAttendence")">Examinee Attendence</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "ExamResult")">Exam Result Processing</a>
+                                    <a class="dropdown-item" href="@Url.Action("EditIndex", "ExamResult")">Exam Result Edit</a>
+                                    
+
+                                </div>
+                            </li>
+                                                       
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index","Report")" id="download">Report</a>
+                            </li>
+                            @if (User.Identity.Name == "Admin" || User.Identity.Name == "System") {                         
+                            @*<li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index","CreateUser")" id="download">Create User</a>
+                            </li>*@
+                                
+                             <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Create User Panel<span class="caret"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="download">
+                                    <a class="dropdown-item" href="@Url.Action("Index", "CreateUser", new { UserType="T"})">Teacher List</a>
+                                    <a class="dropdown-item" href="@Url.Action("CreateTeacher", "CreateUser")">Create Teacher</a>
+                                    <a class="dropdown-item" href="@Url.Action("AddSubject", "CreateUser")">Add Subject To Teacher</a>
+                                    <div class="dropdown-divider"></div>                                    
+                                </div>
+                            </li>
+                                
+                                
+                            }
+                            
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Library<span class="caret"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="download">
+                                    <a class="dropdown-item" href="#">Card Issue</a>
+                                    <a class="dropdown-item" href="#">Book Issue</a>
+                                    <a class="dropdown-item" href="#">New Book Entry</a>
+                                    <a class="dropdown-item" href="#">Book Search</a>
+                                   
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Account/Manage" id="download">Change Password</a>
+                            </li>
+
+                        </ul>
+                        <ul class="nav navbar-nav ml-auto">
+                            @Html.Partial("_LoginPartial")
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+  
+    <div class="container" style="padding-top:8%">
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - RSA Info Tech all right reserved.</p>
+        </footer>
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")  
+
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    @*<script>
+        //change browser History or Uri
+        jQuery(document).ready(function ($) {
+
+            window.history.pushState({}, document.title, "/" + "RSAedu");
+        });
+    </script>*@
+</body>
+<!-- Mirrored from bootswatch.com/pulse/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Mar 2018 05:37:49 GMT -->
+</html>

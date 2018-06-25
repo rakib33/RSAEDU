@@ -1,0 +1,298 @@
+﻿@model RSAEDU.Models.UserModel
+
+
+
+
+@using (Html.BeginForm("CreateTeacher", "CreateUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+ 
+    <div>
+       <h4> @ViewBag.message </h4>
+    </div>
+    <hr />
+    <div class="col-md-6 col-sm-6">
+
+
+        <div class="bg-danger">
+            @Html.ValidationSummary()
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @required = "required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @required = "required" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-5 col-sm-5">Class Name <span style="color:red">*</span></label>
+            <div class="col-md-10 col-sm-10">
+                @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Class_Id, "Select Class", new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.ClassId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-5 col-sm-5">Department Name <span style="color:red">*</span></label>
+            <div class="col-md-10 col-sm-10">
+                @Html.DropDownList("FacultyId", (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "Select Department", new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.FacultyId)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                <label class="control-label col-md-5 col-sm-5">Subject Name <span style="color:red">*</span></label>
+                <div class="col-md-10 col-sm-10">
+                    <select id="SubjectId" name="SubjectId" class="form-control" required></select>
+                    @Html.ValidationMessageFor(model => model.SubjectId)
+                </div>
+            </div>*@
+    </div>
+      @*<div class="col-md-8 col-sm-8" >*@
+       <div class="row">
+           <div id="dtSubject" class="col-md-12 col-sm-12">
+
+           </div>
+       @*</div>*@
+           
+       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnSave" type="submit" class="btn btn-default" value="Create User" />
+            </div>
+        </div>
+  </div>
+}
+
+
+  <script>
+    function clear() {
+        $("#dtSubject").empty();
+        $("#SubjectId").empty();
+
+    }
+    $(document).ready(function () {
+
+     
+
+        $("#ClassId").change(function () {
+            clear();
+
+            var _ClassId = $("#ClassId").val();
+            var _FacultyId = $("#FacultyId").val();
+
+            console.log('class Id =' + _ClassId + ' Faculty Id' + _FacultyId);
+
+            if (_FacultyId == null || _FacultyId == '' || isNaN(_ClassId)) {
+              console.log('faculty Name ' + _FacultyId);
+            } else {
+
+                LoadSubject(_ClassId, _FacultyId);
+            }
+            return false;
+        })
+
+
+        $("#FacultyId").change(function () {
+            clear();
+
+            var _ClassId = $("#ClassId").val();
+            var _FacultyId = $("#FacultyId").val();
+
+            console.log('class Id =' + _ClassId + ' Faculty Id' + _FacultyId);
+
+            if (_ClassId == null || _ClassId == '' || isNaN(_ClassId))
+                alert('Please Select a Class Name');
+            else if (_FacultyId == null || _FacultyId == '' || isNaN(_ClassId))
+                alert('Please Select a Department Name')
+            else {
+                //call ajax for subject
+                LoadSubject(_ClassId, _FacultyId);
+            }
+
+            return false;
+        });
+
+        function LoadSubject(classId, facultyId) {
+            console.log('this is from console');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LoadAllSubject", "DataRetrive")', //'/Home/LoadSubject',
+
+                dataType: 'json',
+
+                data: { ClassId: classId, FacultyId: facultyId },
+
+                success: function (data) {
+
+                    console.log(data.msg);
+                    if (data.msg === 'Ok') {
+
+                        createTable(data.list);
+                        //add initial option
+                        //$("#SubjectId").append('<option value="">Select Subject</option>');
+                        //$.each(data.list, function (i, state) {
+                        //    $("#SubjectId").append('<option value="' + state.Id + '">' +
+                        //         state.SubjectName + '</option>');
+                        //    //alert('Success');
+
+                        //});
+                    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve subject.' + ex);
+                }
+            });
+        }
+
+     
+
+        // ADD THE TABLE TO YOUR WEB PAGE.
+        function createTable(student) {
+
+            console.log('Student' + student);
+            arrHead = [];
+            arrHead = ['Sl', '', 'Subject Name','Subject Code','id'];      // SIMPLY ADD OR REMOVE VALUES IN THE ARRAY FOR TABLE HEADERS.
+
+
+            var empTable = document.createElement('table');
+            empTable.setAttribute('id', 'tbl_attendence');            // SET THE TABLE ID.
+            empTable.setAttribute('class', 'table table-striped table-bordered table-hover dt-responsive nowrap')
+
+
+            var tr = empTable.insertRow(-1);
+            //We know that Student has two column name and roll we get
+            //and extra Sl No ,CheckBox get 4 field
+
+            for (var h = 0; h < arrHead.length; h++) {
+                var th = document.createElement('th');          // TABLE HEADER.
+                if (arrHead[h] === '') {
+                    //add a checkbox All
+                    th.innerHTML = '<input type="checkbox" id="all" />';
+                }
+                else if (arrHead[h] === 'id') {
+                    th.innerHTML = '';
+                }
+                else {
+                    th.innerHTML = arrHead[h];
+                }
+                tr.appendChild(th);
+
+            }
+
+            //display how many prototype
+
+            var div = document.getElementById('dtSubject'); //Where want to create table
+            div.appendChild(empTable);    // ADD THE TABLE TO YOUR WEB PAGE.
+
+
+            //Add row
+
+
+            $.each(student, function (i, _sub) {
+
+                var empTab = document.getElementById('tbl_attendence');
+                var rowCnt = empTab.rows.length;        // GET TABLE ROW COUNT.
+
+                console.log('row Count :' + rowCnt);
+                var tr = empTab.insertRow(rowCnt);      // TABLE ROW.
+
+
+                for (var c = 0; c < arrHead.length; c++) {
+                    console.log('Name ' + _sub.SubjectName + ' id ' + _sub.Id + ' index ' + i);
+
+                    var td = document.createElement('td');          // TABLE DEFINITION.
+                    td = tr.insertCell(c);
+                    if (c === 0)//Sl No
+                    {
+
+                        var t = document.createTextNode("" + (i + 1));
+                        td.appendChild(t);
+                    }
+
+                    if (c === 1) {
+                        console.log('c =' + c);
+                        var x = document.createElement("INPUT");
+                        x.setAttribute("type", "checkbox");
+                        x.setAttribute("data-val","true");
+                       // x.setAttribute("checked", "true");
+                        x.setAttribute("id", "Subjects[" + i + "]IsCheck");
+                        x.setAttribute("name", "Subjects[" + i + "].IsCheck");
+                        td.appendChild(x);
+
+                        // id="TypeDetails[0]chk" name="TypeDetails[0].chk"
+                    }
+
+                    if (c === 2) {
+                        var ele = document.createElement('input');
+                        ele.setAttribute('type', 'text');
+                        ele.setAttribute('class', 'form-control no-border bk-transparent');
+                        ele.setAttribute("id", "Subjects[" + i + "]SubjectName");
+                        ele.setAttribute("name", "Subjects[" + i + "].SubjectName");
+                        ele.setAttribute('value', _sub.SubjectName);
+                        //no-border
+
+                        td.appendChild(ele);
+
+                    }
+                    if (c === 3) {
+                        var ele = document.createElement('input');
+                        ele.setAttribute('type', 'text');
+                        ele.setAttribute('class', 'form-control no-border bk-transparent');
+                        ele.setAttribute("id", "Subjects[" + i + "]ManualCode");
+                        ele.setAttribute("name", "Subjects[" + i + "].ManualCode");
+                        ele.setAttribute('value', _sub.ManualCode);
+
+                        //create a hidden input also for Student Id
+                        //StudentId
+
+                        td.appendChild(ele);
+
+                    }
+                    if (c == 4)
+                    {
+                        //hidden field
+                        var ele = document.createElement('input');
+                        ele.setAttribute('type', 'text');
+                        ele.setAttribute('class', 'hidden');
+                        ele.setAttribute("id", "Subjects[" + i + "]Id");
+                        ele.setAttribute("name", "Subjects[" + i + "].Id");
+                        ele.setAttribute('value', _sub.Id);
+
+                        td.appendChild(ele);
+                    }
+
+                }
+
+            });
+
+
+
+        }
+
+
+        function check(e){
+
+            alert(e);
+
+        }
+      
+    });
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

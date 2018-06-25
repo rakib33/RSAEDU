@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+
+<div class="container py-2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 mx-auto">
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h5 class="mb-0">Individual Grade Sheet</h5>
+                        </div>
+                        <div class="card-body">
+                            <h3>@Html.Raw(ViewBag.message)</h3>
+                            @using (Html.BeginForm("IndividualGradeSheetStudent", "Report", FormMethod.Get))
+                            {
+
+                                <div class="row margin-top-05">
+
+                                    <label class="col-sm-2 pull-left text-center">Exam Name</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownList("ExamId", (IEnumerable<SelectListItem>)ViewBag.ExamId, "Select Exam", new { @class = "form-control", required = "@required" })
+                                    </div>
+
+                                    <label class="col-sm-2 pull-left text-center"></label>
+                                    <div class="col-sm-4">
+                                        <button id="submit" class="btn btn-success pull-left">Result Report</button>
+                                    </div>
+                                </div>
+
+                                @*<div class="row margin-top-05">
+                                    <label class="col-sm-2 pull-left text-center">Student Roll</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control pull-left txt-hight-30" name="Roll" id="StudentRoll" required="required" />
+                                    </div>
+                                    <label class="col-sm-2 pull-left text-center"></label>
+                                    <div class="col-sm-4">
+                                        <button id="submit" class="btn btn-success pull-left">Result Report</button>
+                                    </div>
+                                </div>*@
+                            }
+
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+
+
+
+
+
+<script>
+
+    $(document).ready(function (){
+
+        document.getElementById("submit").class = 'hidden';
+
+        function ClearSubject() {
+            $("#Subject").empty();
+        }
+
+        $("#ExamId").change(function () {
+
+            $("#Subject").empty();
+        });
+
+        $("#DeparmentId").change(function () {
+
+            //alert($("#DeparmentId").val());
+
+            $("#Subject").empty();
+            clear();
+
+
+            arrHead = []; //empty array
+            //console.log('hited');
+            $.ajax({
+                type: 'POST',
+                url:'@Url.Action("LoadSubject", "ExamResult")', //'/Home/LoadSubject',
+
+                dataType: 'json',
+
+                data: { depId: $("#DeparmentId").val() },
+
+
+                success: function (data) {
+
+                    console.log(data.msg);
+                    if (data.msg === 'Ok') {
+                        //add initial option
+                        $("#Subject").append('<option value="">Select Subject</option>');
+                        $.each(data.list, function (i, state) {
+                            $("#Subject").append('<option value="' + state.Id + '">' +
+                                 state.SubjectName + '</option>');
+                            //alert('Success');
+
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve subject.' + ex);
+                }
+            });
+            return false;
+        })
+    })
+</script>
+

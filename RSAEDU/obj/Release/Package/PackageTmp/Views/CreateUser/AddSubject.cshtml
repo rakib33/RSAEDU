@@ -1,0 +1,155 @@
+﻿@model RSAEDU.Models.UserModelAddSubject
+
+
+
+
+@using (Html.BeginForm("AddSubject", "CreateUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <h4> @ViewBag.message </h4>
+    </div>
+    <hr />
+    <div class="col-md-6 col-sm-6">
+
+
+        <div class="bg-danger">
+            @Html.ValidationSummary()
+        </div>
+
+        <div class="form-group">
+            
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.TeacherList, "Select Teacher", new { @class = "form-control", required = "required" })                
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+   
+        <div class="form-group">
+            <label class="control-label col-md-5 col-sm-5">Class Name <span style="color:red">*</span></label>
+            <div class="col-md-10 col-sm-10">
+                @Html.DropDownList("ClassId", (IEnumerable<SelectListItem>)ViewBag.Class_Id, "Select Class", new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.ClassId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-5 col-sm-5">Department Name <span style="color:red">*</span></label>
+            <div class="col-md-10 col-sm-10">
+                @Html.DropDownList("FacultyId", (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "Select Department", new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.FacultyId)
+            </div>
+        </div>
+
+        <div class="form-group">
+                <label class="control-label col-md-5 col-sm-5">Subject Name <span style="color:red">*</span></label>
+                <div class="col-md-10 col-sm-10">
+                    <select id="SubjectId" name="SubjectId" class="form-control" required></select>
+                    @Html.ValidationMessageFor(model => model.SubjectId)
+                </div>
+        </div>
+    </div>
+    @*<div class="col-md-8 col-sm-8" >*@
+    <div class="row">
+        <div id="dtSubject" class="col-md-12 col-sm-12">
+
+        </div>
+        @*</div>*@
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnSave" type="submit" class="btn btn-default" value="Create User" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    function clear() {
+        $("#dtSubject").empty();
+        $("#SubjectId").empty();
+
+    }
+    $(document).ready(function () {
+
+
+
+        $("#ClassId").change(function () {
+            clear();
+
+            var _ClassId = $("#ClassId").val();
+            var _FacultyId = $("#FacultyId").val();
+
+            console.log('class Id =' + _ClassId + ' Faculty Id' + _FacultyId);
+
+            if (_FacultyId == null || _FacultyId == '' || isNaN(_ClassId)) {
+              console.log('faculty Name ' + _FacultyId);
+            } else {
+
+                LoadSubject(_ClassId, _FacultyId);
+            }
+            return false;
+        })
+
+
+        $("#FacultyId").change(function () {
+            clear();
+
+            var _ClassId = $("#ClassId").val();
+            var _FacultyId = $("#FacultyId").val();
+
+            console.log('class Id =' + _ClassId + ' Faculty Id' + _FacultyId);
+
+            if (_ClassId == null || _ClassId == '' || isNaN(_ClassId))
+                alert('Please Select a Class Name');
+            else if (_FacultyId == null || _FacultyId == '' || isNaN(_ClassId))
+                alert('Please Select a Department Name')
+            else {
+                //call ajax for subject
+                LoadSubject(_ClassId, _FacultyId);
+            }
+
+            return false;
+        });
+
+        function LoadSubject(classId, facultyId) {
+            console.log('this is from console');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LoadAllSubject", "DataRetrive")', //'/Home/LoadSubject',
+
+                dataType: 'json',
+
+                data: { ClassId: classId, FacultyId: facultyId },
+
+                success: function (data) {
+
+                    console.log(data.msg);
+                    if (data.msg === 'Ok') {
+                        //add initial option
+                        $("#SubjectId").append('<option value="">Select Subject</option>');
+                        $.each(data.list, function (i, state) {
+                            $("#SubjectId").append('<option value="' + state.Id + '">' +
+                                 state.SubjectName + '</option>');
+                            //alert('Success');
+
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve subject.' + ex);
+                }
+            });
+        }      
+     
+
+    });
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

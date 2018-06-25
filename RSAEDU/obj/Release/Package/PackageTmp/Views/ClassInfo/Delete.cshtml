@@ -1,0 +1,48 @@
+﻿@model RSAEDU.Models.ClassInfo
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ClassInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

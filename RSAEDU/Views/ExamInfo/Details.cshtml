@@ -1,0 +1,90 @@
+﻿@model RSAEDU.Models.ExamInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ExamInfo</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExamName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExamName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExamStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExamStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorizedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorizedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorizedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorizedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

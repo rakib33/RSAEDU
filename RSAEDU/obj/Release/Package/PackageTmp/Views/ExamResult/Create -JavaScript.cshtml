@@ -1,0 +1,526 @@
+﻿
+@*@using (Html.BeginForm("Save", "ExamResult", FormMethod.Post))
+{*@
+@*<form id="resultForm">*@
+
+    <div class="row" style="margin-top:5%">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="red">*</span>Exam</label>
+                <div class="col-sm-6">
+                    @Html.DropDownList("ExamId", (IEnumerable<SelectListItem>)ViewBag.ExamId, "Select Exam", new { @class = "form-control", @required = "required" })
+                    <ul class="parsley-errors-list" id="parsley-id-7330"></ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="red">*</span>Department</label>
+                <div class="col-sm-6">
+                    @Html.DropDownList("DeparmentId", (IEnumerable<SelectListItem>)ViewBag.Faculty, "Select Department", new { @class = "form-control", @required = "required" })
+                    <ul class="parsley-errors-list" id="parsley-id-7330"></ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="red">*</span>Subject</label>
+                <div class="col-sm-6">
+                    <select id="Subject" class="form-control" required></select>
+
+                    <ul class="parsley-errors-list" id="parsley-id-7330"></ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div id="dtable" class="col-md-8 col-sm-8">
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <button id="submit" class="btn btn-success pull-left" onclick="sumbit()">Submit</button>
+        </div>
+    </div>
+@*}*@
+@*</form>*@
+
+
+@*<script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/input_validation.js"></script>*@
+
+<script type="text/javascript">
+
+
+
+
+    //global variable
+    var ExamResultMaster;
+
+    var listOfObjects = [];
+
+    var StudentList = [];
+
+  
+
+    //var singleObj = {}
+    //singleObj['type'] = 'vehicle';
+    //singleObj['value'] = entry;
+    //listOfObjects.push(singleObj);
+    //create a ExamResult Object
+    function ExamResult(ExId,deptId,SubId) {
+        this.ExamId = ExId;
+        this.DepartmentId = deptId;
+        this.SubjectId = SubId;
+        this.StudentList = {};
+    }
+
+    var StudentDataObj = {
+        chk: '',
+        Name: '',
+        Roll:''
+       
+    };
+
+    var Student;
+    function clear() {
+        $("#dtable").empty();
+    }
+    $(document).ready(function () {
+
+        
+        $("#ExamId").change(function () {
+            $("#dtable").empty();
+            $("#Subject").empty();
+        });
+
+        $("#DeparmentId").change(function () {
+
+            //alert($("#DeparmentId").val());
+
+            $("#dtable").empty();
+            $("#Subject").empty();
+
+            arrHead = []; //empty array
+            //console.log('hited');
+            $.ajax({
+                type: 'POST',
+                url:'@Url.Action("LoadSubject", "ExamResult")', //'/Home/LoadSubject',
+
+                dataType: 'json',
+
+                data: { depId: $("#DeparmentId").val() },
+
+
+                success: function (data) {
+
+                    console.log(data.msg);
+                    if (data.msg === 'Ok') {
+                        //add initial option
+                        $("#Subject").append('<option value="">Select Subject</option>');
+                        $.each(data.list, function (i, state) {
+                            $("#Subject").append('<option value="' + state.Id + '">' +
+                                 state.SubjectName + '</option>');
+                            //alert('Success');
+
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve subject.' + ex);
+                }
+            });
+            return false;
+        })
+
+
+        $("#Subject").change(function () {
+            //clear the table container div
+            $("#dtable").empty();
+
+            //console.log('hited');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LoadStudent", "ExamResult")',
+
+                dataType: 'json',
+
+                data: { subId: $("#Subject").val() },
+
+
+                success: function (data) {
+
+                   console.log(data.msg);
+
+                   if (data.msg === 'Ok')
+                   {
+                       Student = data.StudentList;
+                       createTable(data.StudentList, data.type);
+
+                       //after table create assign master data 
+                       ExamResultMaster = new ExamResult($("#ExamId").val(), $("#DeparmentId").val(), $("#Subject").val());
+
+                       console.log('Exam Result Exam= '+ExamResultMaster.ExamId+' department '+ExamResultMaster.DepartmentId+' Subject '+ExamResultMaster.SubjectId);
+                   }
+                 
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve country states.' + ex);
+                }
+            });
+            return false;
+        })
+
+    });
+
+    // ARRAY FOR HEADER.
+    var arrHead = new Array();
+
+    function handleClick(cb) {
+        alert("Clicked, new value = " + cb.checked);
+        var id = cb.id;
+        var index = GetIndex(id);
+        alert(cb.id + '' + index)
+
+        if (id != 'All') {
+            console.log('Not All.Index='+index+' val='+1);
+            AddHidenValue(index, 1)
+            if (cb.checked === true) {
+                //add value another hidden text
+                AddHidenValue(index, '1')
+            } else {
+                //remove value from hidden text
+                AddHidenValue(index, '-1');
+            }
+        } else {
+
+
+
+        }
+    }
+
+
+    function GetIndex(val)
+    {
+        var divide = val.split("_");
+        return divide[1];
+    }
+
+    function AddHidenValue(index, val) {
+
+      //  alert(index,val);
+        if (index >= 0) {
+            var hidinput = 'hid_' + index;
+            document.getElementById(hidinput).value = val;
+        }
+    }
+
+    // FIRST CREATE A TABLE STRUCTURE BY ADDING A FEW HEADERS AND
+    // ADD THE TABLE TO YOUR WEB PAGE.
+    function createTable(student, Qtype) {
+
+        arrHead = [];
+        arrHead = ['Sl', '', 'Stu. Name', 'Roll','hid'];      // SIMPLY ADD OR REMOVE VALUES IN THE ARRAY FOR TABLE HEADERS.
+
+        //pass student and Qtype for d table
+        console.log('Qtype'+Qtype)
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable');            // SET THE TABLE ID.
+        empTable.setAttribute('class', 'table table-striped table-bordered dt-responsive nowrap')
+
+        var tr = empTable.insertRow(-1);
+        //We know that Student has two column name and roll we get
+        //and extra Sl No ,CheckBox get 4 field
+
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th');          // TABLE HEADER.
+            if (arrHead[h] === '') {
+                //add a checkbox All
+                th.innerHTML = '<input type="checkbox" id="all" onclick="handleClick(this);" class="form-control" />';
+            }
+            else if (arrHead[h] === 'hid') { //for hidden column
+                th.innerHTML = '';
+            }
+            else {
+                th.innerHTML = arrHead[h];
+            }
+            tr.appendChild(th);
+           // AddColumnHeader(arrHead[h]);
+        }
+
+        //Now Add dynamic qType
+        $.each(Qtype, function (i, qtype) {
+            var th = document.createElement('th');          // TABLE HEADER.
+
+            th.innerHTML = qtype.ExamTypeName;
+            console.log(qtype.ExamTypeName);
+            tr.appendChild(th);
+            //push the type in array
+            arrHead.push(qtype.ExamTypeName);
+
+            //Extend Student Data Object
+            StudentDataObj[qtype.ExamTypeName];
+         
+          
+         });
+
+        //display how many prototype
+
+        console.log('student Data Length= ' + StudentDataObj);
+
+
+        var div = document.getElementById('dtable'); //Where want to create table
+        div.appendChild(empTable);    // ADD THE TABLE TO YOUR WEB PAGE.
+
+        addRow(student, Qtype);
+    }
+
+    // ADD A NEW ROW TO THE TABLE.s
+    function addRow(stu,qtype) {
+       // alert('Hited');
+        console.log('Student List ' + stu);
+
+        $.each(stu, function (i, _stu) {
+
+            var empTab = document.getElementById('empTable');
+            var rowCnt = empTab.rows.length;        // GET TABLE ROW COUNT.
+
+            console.log('row Count :'+rowCnt);
+            var tr = empTab.insertRow(rowCnt);      // TABLE ROW.
+
+            //tr = empTab.insertRow(rowCnt);
+
+            for (var c = 0; c < arrHead.length; c++) {
+                console.log('Name ' + _stu.StudentName + ' Age ' + _stu.RollNo + ' index ' + i);
+
+                var td = document.createElement('td');          // TABLE DEFINITION.
+                td = tr.insertCell(c);
+                if (c === 0)//Sl No
+                {
+
+                    var t = document.createTextNode("" + (i + 1));
+                    td.appendChild(t);
+                }
+
+                if (c === 1) {
+                    console.log('c ='+c);
+                    var x = document.createElement("input");
+                    x.setAttribute("type", "checkbox");
+                    x.setAttribute("id", "chk_" + i);
+                    x.setAttribute("onclick" , "handleClick(this);");
+                    //x.setAttribute("checked","checked");
+                    td.appendChild(x);
+                }
+
+                if (c === 2)
+                {
+                    var ele = document.createElement('input');
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('class', 'form-control no-border bk-transparent');
+                    ele.setAttribute("id", "Name_" + i);
+                    ele.setAttribute('value', _stu.StudentName);
+                    //no-border
+
+                    td.appendChild(ele);
+
+                }
+                if (c === 3)
+                {
+                    var ele = document.createElement('input');
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('class', 'form-control no-border bk-transparent');
+                    ele.setAttribute("id", "Roll_" + i);
+                    ele.setAttribute('value', _stu.RollNo);
+
+                    td.appendChild(ele);
+
+                }
+                if (c === 4) { //hidden field
+                    var ele = document.createElement('input');
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('class', 'hidden');
+                    ele.setAttribute("id", "hid_" + i);
+              
+
+                    td.appendChild(ele);
+
+                }
+                if(c>4) {
+
+                    var ele = document.createElement('input');
+                    ele.setAttribute('id',arrHead[c]+'_'+i)
+                    ele.setAttribute('type', 'text');
+                    ele.setAttribute('onkeyup', 'change(this)');
+                    ele.setAttribute('class', 'form-control decimal bk-transparent');
+                    ele.setAttribute('value', '');
+
+                    td.appendChild(ele);
+                }
+            }
+
+        });
+
+    }
+
+    // DELETE TABLE ROW.
+    function change(e) {
+        var empTab = document.getElementById('empTable');
+    }
+
+    // EXTRACT AND SUBMIT TABLE DATA.
+    function sumbit() {
+        var myTab = document.getElementById('empTable');
+
+        alert('row length'+myTab.rows.length);
+        var r = myTab.rows[myTab.rows.length-1];
+
+        alert('Row length='+r);
+        var inputs = r.getElementsByTagName("input");
+
+        var result = new Array(inputs.length);
+        var values = new Array();
+        StudentList = [];
+        console.log('Row r:' + r);
+        console.log('input in each row ' + inputs);
+        console.log('result bef '+result);
+
+        //for (var i = 0; i <= inputs.length; i++) {
+        //    result[i] = inputs[i].value; // not innerHTML or something
+        //    console.log('result after ='+result);
+        //}
+    
+
+        //return result;
+
+        // LOOP THROUGH EACH ROW OF THE TABLE.
+        for (row = 1; row <= myTab.rows.length; row++) {
+
+             r = myTab.rows[myTab.rows.length - 1];         
+             inputs = r.getElementsByTagName("input");
+
+            for (var i = 0; i < inputs.length; i++) {
+                //result[i] = inputs[i].value; // not innerHTML or something
+                values.push(inputs[i].value);
+                
+            }
+
+            StudentList.push(values);
+            console.log('Student List '+ StudentList);
+            //for (c = 0; c < myTab.rows[row].cells.length; c++) {   // EACH CELL IN A ROW.
+
+            //    var element = myTab.rows.item(row).cells[c];
+
+
+
+            //    if (element.childNodes[0].getAttribute('type') == 'text') {
+            //        values.push("'" + element.childNodes[0].value + "'");
+            //    }
+            //}
+        }
+        console.log(values);
+    }
+
+
+    function Submit() {
+
+        var listOfObjects = [];
+
+        var myTab = document.getElementById('empTable');
+        var values = new Array();
+
+        // LOOP THROUGH EACH ROW OF THE TABLE.
+        for (row = 1; row < myTab.rows.length; row++) {
+
+            var inputs = r.getElementsByTagName("input");
+            for (c = 1; c < myTab.rows[row].cells.length; c++) {   // EACH CELL IN A ROW.
+
+
+                var element = myTab.rows.item(row).cells[c];
+
+              
+                if (element.childNodes[0].getAttribute('type') == 'text') {
+
+                    var singleObj = {}
+                    singleObj['id'] = element.childNodes[0].id;
+                    listOfObjects.push(singleObj);
+
+                    console.log('list of object'+listOfObjects);
+
+                    values.push("'" + element.childNodes[0].value + "'");
+                }
+            }
+        }
+        console.log('Values ='+ values);
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: '/ExamResult/Save',
+        //    contentType: "application/json; charset=utf-8",
+        //    data: JSON.stringify(values), //convert js object to json object
+        //    dataType: "json",
+        //    success: function () { alert('Success'); },
+        //    error: function (xhr, status, error) { alert('Error:'); }
+        //});
+
+    }
+
+
+    function change(e) {
+      //  alert('hited');
+                    
+        var Id = e.id;
+        var value = e.value;
+       // alert(Id);
+       // alert(value);
+
+        var res = Id.split("_");
+        var Index = res[1];
+        var property = res[0];
+
+       // alert(Index);
+       // alert(property);
+
+        SaveArray(Index,property,value);
+        //save item in array
+    }
+
+
+    function returnArray(index)
+    {
+
+        
+       
+    }
+
+   
+
+    function SaveArray(_index,_property,_value)
+    {
+
+        StudentDataObj = {};
+        StudentDataObj.chk = _index;
+        StudentDataObj[_property] = _value;
+
+        var val = document.getElementById('Roll_'+_index).value;
+        var name = document.getElementById('Name_'+_index).value;
+        
+        StudentDataObj.Roll = val;
+        StudentDataObj.Name = name;
+
+        console.log(StudentDataObj);
+
+        if (listOfObjects == null) {
+            listOfObjects.push(StudentDataObj);
+            console.log('listObject ='+listOfObjects);
+        } else {
+            //check if found previously record update id
+            var result = listOfObjects.filter(function (obj) {
+                return obj.chk == _index;
+            });
+
+            console.log('find array by index='+result);
+        }
+
+    }
+</script>
